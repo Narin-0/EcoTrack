@@ -10,9 +10,7 @@ from geopy.exc import GeocoderTimedOut, GeocoderServiceError
 
 app = FastAPI()
 
-# !!! ВАЖНО: В реальных приложениях никогда не храните пароли в открытом виде!
-# Используйте переменные окружения, безопасные хранилища и хеширование паролей.
-ADMIN_PASSWORD = "admin_password" # <<< ИЗМЕНИТЕ ЭТОТ ПАРОЛЬ НА ВАШ СОБСТВЕННЫЙ И БОЛЕЕ СЛОЖНЫЙ
+ADMIN_PASSWORD = "admin_password" # <<< ПАРОЛЬ
 
 # Монтируем папки для статических файлов
 app.mount("/CSS", StaticFiles(directory="../CSS"), name="CSS")
@@ -25,10 +23,10 @@ app.mount("/Аудио", StaticFiles(directory="../Аудио"), name="audio")
 
 templates = Jinja2Templates(directory="../templates")
 
-# Создание таблиц (происходит при старте приложения, если их нет)
+# Создание таблиц в базе данных
 Base.metadata.create_all(bind=engine)
 
-# Dependency to get DB session
+# Функция для получения сессии базы данных
 def get_db():
     db = SessionLocal()
     try:
@@ -66,15 +64,13 @@ async def about_page(request: Request):
     """Обслуживает страницу "О проекте"."""
     return templates.TemplateResponse("about.html", {"request": request})
 
-# --- НОВЫЙ РОУТ ДЛЯ СТРАНИЦЫ "ОБ АВТОРЕ" ---
-@app.get("/author", response_class=HTMLResponse) # Вы можете изменить "/author" на другое имя, если хотите
+@app.get("/author", response_class=HTMLResponse) 
 async def author_page(request: Request):
     """Обслуживает страницу 'Автор проекта'."""
     return templates.TemplateResponse("author.html", {"request": request})
 # ------------------------------------------
 
 # --- API Эндпоинты ---
-# ... (остальные API эндпоинты, как в предыдущем полном коде) ...
 
 @app.post("/submit_supplier")
 async def submit_supplier(

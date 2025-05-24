@@ -1,5 +1,3 @@
-// JS/app_address.js
-
 // Инициализация карты
 const map = L.map('map', {
     attributionControl: false // Можно оставить или убрать, если вам нужен контроль атрибуции
@@ -177,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('company-list')) {
         loadCompanies();
     }
-    // Проверим, есть ли элементы для геокодирования формы администратора
+    
     const addressInputForm = document.getElementById('address_input'); // Поле ввода адреса в форме админа
     const geocodeButtonForm = document.getElementById('geocode_button'); // Кнопка геокодирования в форме админа
     const coordinatesDisplayForm = document.getElementById('coordinates_display'); // Отображение координат в форме админа

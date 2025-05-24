@@ -6,8 +6,11 @@
     <title>EcoTrack - Добавить компанию</title>
     <link rel="icon" href="/Изабражения/Книга_и_перо.png" type="image/png">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-
-    <link rel="stylesheet" href="/CSS/base.css" />         <link rel="stylesheet" href="/CSS/layout.css" />        <link rel="stylesheet" href="/CSS/components.css" />    <link rel="stylesheet" href="/CSS/pages/admin.css" />   </head>
+    <link rel="stylesheet" href="/CSS/base.css" />         
+    <link rel="stylesheet" href="/CSS/layout.css" />        
+    <link rel="stylesheet" href="/CSS/components.css" />    
+    <link rel="stylesheet" href="/CSS/pages/admin.css" />   
+</head>
 <body>
     <header>
         <div class="logo">EcoTrack</div>
@@ -23,7 +26,7 @@
             <div class="form-panel">
                 <h2>Добавить компанию</h2>
                 <form id="supplier-form" method="POST" action="/submit_supplier">
-                    <h2>📦 Основные поля</h2>
+                    <h2> Основные поля</h2>
                     <label>
                         Название компании:
                         <input type="text" name="company_name" required placeholder="Название компании">
@@ -61,7 +64,7 @@
                         <input type="text" name="region" required placeholder="Регион / область / город">
                     </label><br>
 
-                    <h2>✅ Этические параметры</h2>
+                    <h2> Этические параметры</h2>
                     <label>Сертификации:
                         <input type="text" name="certifications" placeholder="Через запятую: FairTrade, Organic">
                     </label><br>
@@ -78,7 +81,7 @@
                         <input type="date" name="last_audit_date">
                     </label><br>
 
-                    <h2>📝 Дополнительные</h2>
+                    <h2> Дополнительные</h2>
                     <label>
                         Контактный email:
                         <input type="email" name="contact_email" placeholder="Контактный email">

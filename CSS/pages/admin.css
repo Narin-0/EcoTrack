@@ -19,9 +19,7 @@ header {
   padding: 1rem 2rem;
   background: linear-gradient(90deg, #A8E063 0%, #56AB2F 100%);
   color: white;
-  /* position: fixed; */
   top: 0;
-  /* z-index: 1000; */
 }
 nav a {
   margin-left: 1.5rem;
