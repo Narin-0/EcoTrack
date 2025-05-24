@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Успешно!</title>
+    <link rel="icon" href="/Изабражения/Книга_и_перо.png" type="image/png">
+    <link rel="stylesheet" href="/CSS/base.css" />
+    <link rel="stylesheet" href="/CSS/layout.css" />
+    <link rel="stylesheet" href="/CSS/components.css" />
+    <style>
+        /* Стили для страницы успеха */
+        .success-message {
+            text-align: center;
+            padding: 50px;
+            margin-top: 50px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 50px auto;
+        }
+        .success-message h2 {
+            color: #10b981; /* Зеленый цвет для сообщения об успехе */
+            border-bottom: none;
+            margin-bottom: 20px;
+        }
+        .success-message .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .success-message .back-link:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">EcoTrack</div>
+        <nav>
+            <a href="/user">Пользователь</a>
+            <a href="/admin">Администратор</a>
+            <a href="/about">О проекте</a>
+            <a href="/author">Автор проекта</a>
+        </nav>
+    </header>
+    <main>
+        <div class="success-message">
+            <h2>✅ Операция успешно выполнена!</h2>
+            <p>Ваши данные были успешно сохранены.</p>
+            <a href="/admin" class="back-link">Вернуться в Админ-панель</a>
+        </div>
+    </main>
+</body>
+</html>

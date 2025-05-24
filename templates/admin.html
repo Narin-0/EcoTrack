@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoTrack - Добавить компанию</title>
+    <link rel="icon" href="/Изабражения/Книга_и_перо.png" type="image/png">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <link rel="stylesheet" href="/CSS/base.css" />         <link rel="stylesheet" href="/CSS/layout.css" />        <link rel="stylesheet" href="/CSS/components.css" />    <link rel="stylesheet" href="/CSS/pages/admin.css" />   </head>
+<body>
+    <header>
+        <div class="logo">EcoTrack</div>
+        <nav>
+            <a href="/user">Пользователь</a>
+            <a href="/about">О проекте</a>
+            <a href="/author">Автор проекта</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="page-layout">
+            <div class="form-panel">
+                <h2>Добавить компанию</h2>
+                <form id="supplier-form" method="POST" action="/submit_supplier">
+                    <h2>📦 Основные поля</h2>
+                    <label>
+                        Название компании:
+                        <input type="text" name="company_name" required placeholder="Название компании">
+                    </label><br>
+
+                    <label>
+                        Название продукта:
+                        <input type="text" name="product_name" required
+                        placeholder="Название продукта">
+                    </label><br>
+
+                    <label>Этап цепочки поставки:
+                        <select name="stage" required>
+                            <option value="Производство">Производство</option>
+                            <option value="Переработка">Переработка</option>
+                            <option value="Дистрибуция">Дистрибуция</option>
+                        </select>
+                    </label><br>
+
+                    <label>
+                        Адрес компании:
+                        <input type="text" id="address_input" name="address" required placeholder="Введите адрес компании (например, Бишкек, ул. Ленина 1)">
+                    </label><br>
+                    <button type="button" id="geocode_button" style="margin-bottom: 10px;">Показать адрес на карте</button><br>
+                    <div id="coordinates_display" style="font-size: 0.9em; color: #555; margin-bottom: 10px;">
+                        Координаты на карте: не определены
+                    </div>
+                    <label>
+                        Страна:
+                        <input type="text" name="country" required placeholder="Страна">
+                    </label><br>
+
+                    <label>
+                        Регион:
+                        <input type="text" name="region" required placeholder="Регион / область / город">
+                    </label><br>
+
+                    <h2>✅ Этические параметры</h2>
+                    <label>Сертификации:
+                        <input type="text" name="certifications" placeholder="Через запятую: FairTrade, Organic">
+                    </label><br>
+
+                    <label>Практики труда:
+                        <input type="text" name="labor_practices" placeholder="Без детского труда, Справедливая оплата">
+                    </label><br>
+
+                    <label>Экологические практики:
+                        <input type="text" name="environmental_practices" placeholder="Низкий углеродный след">
+                    </label><br>
+
+                    <label>Дата последней проверки:
+                        <input type="date" name="last_audit_date">
+                    </label><br>
+
+                    <h2>📝 Дополнительные</h2>
+                    <label>
+                        Контактный email:
+                        <input type="email" name="contact_email" placeholder="Контактный email">
+                    </label><br>
+
+                    <label>
+                        Сайт:
+                        <input type="url" name="website"
+                        placeholder="Сайт компании">
+                    </label><br>
+
+                    <label>Примечания:
+                        <textarea name="notes"></textarea>
+                    </label><br><br>
+
+                    <button type="submit">💾 Сохранить</button>
+                </form>
+            </div>
+
+            <div class="map-panel">
+                <div id="map"></div>
+                <div class="sidebar">
+                  <div class="company-search">
+                      <input type="text" id="company-search" placeholder="🔍 Поиск компании...">
+                  </div>
+                  <ul id="company-list"></ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="/JS/app_address.js"></script>
+</body>
+</html>

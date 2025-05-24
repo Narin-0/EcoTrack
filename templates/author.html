@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Narin</title>
+    <link rel="icon" href="/Изабражения/Книга_и_перо.png" type="image/png">
+    <style>
+        /* Общие стили */
+        @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Roboto+Slab:wght@100..900&display=swap');
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: relative; /* Или fixed, если хотите прибить к низу экрана */
+            bottom: 0;
+            width: 100%;
+        }
+
+        header {
+            background-color: #0073e6;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        /* Стили для аккордеона */
+        .accordion summary {
+            display: block;
+            background: #007bff;
+            color: white;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-bottom: 10px; /* Отступ между аккордеонами */
+        }
+
+        .accordion summary:hover {
+            background: #0056b3;
+        }
+
+        /* Стиль для контента аккордеона */
+        .accordion[open] summary {
+            background: #0056b3; /* Цвет при открытом аккордеоне */
+        }
+        .accordion p, .accordion ul {
+            padding: 15px;
+            background-color: #e9ecef;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+            margin-top: 0;
+        }
+        .accordion img, .accordion video, .accordion audio {
+            max-width: 100%; /* Медиафайлы не будут выходить за границы контейнера */
+            height: auto;
+            display: block; /* Убираем лишние отступы */
+            margin: 10px 0;
+        }
+
+        /* Стили для галереи изображений */
+        .gallery {
+            display: flex;
+            flex-wrap: wrap; /* Позволяет изображениям переноситься на новую строку */
+            gap: 10px;
+            justify-content: center; /* Центрируем изображения в галерее */
+            margin-top: 20px;
+        }
+        .gallery img {
+            width: calc(33.333% - 10px); /* Три изображения в ряд с учетом gap */
+            max-width: 500px; /* Ограничиваем максимальный размер */
+            height: auto; /* Сохраняем пропорции */
+            object-fit: cover; /* Обрезает изображение, чтобы оно заполняло контейнер */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        @media (max-width: 768px) {
+            .gallery img {
+                width: calc(50% - 10px); /* Два изображения в ряд на средних экранах */
+            }
+        }
+        @media (max-width: 480px) {
+            .gallery img {
+                width: 100%; /* Одно изображение в ряд на маленьких экранах */
+            }
+        }
+
+        /* Стили для подсказок (hover эффекты для текста) */
+        .qwe, .DOOM, .Genshin_Impact, .Portal_2, .Minecraft {
+            color: #000000;
+            cursor: pointer;
+            text-decoration: underline;
+            position: relative;
+        }
+        /* Общие стили для ::after псевдоэлементов */
+        .DOOM::after, .Genshin_Impact::after, .Portal_2::after, .Minecraft::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: 125%; /* Расположение над текстом */
+            transform: translateX(-50%);
+            background: black;
+            padding: 5px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            background-size: cover;
+            background-position: center;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 10; /* Убедимся, что изображение над другими элементами */
+        }
+        .DOOM::after {
+            width: 72px;
+            height: 88px;
+            background-image: url('/Изабражения/Обложка_Doom_Eternal.jpg');
+        }
+        .Genshin_Impact::after {
+            width: 120px;
+            height: 160px;
+            background-image: url('/Изабражения/genshintall_1200x1600.jpeg');
+        }
+        .Portal_2::after {
+            width: 129px;
+            height: 194px;
+            background-image: url('/Изабражения/Portal2cover.jpg');
+        }
+        .Minecraft::after {
+            width: 128px;
+            height: 192px;
+            background-image: url('/Изабражения/Minecraft_Cover_Art.png');
+        }
+        .DOOM:hover::after, .Genshin_Impact:hover::after, .Portal_2:hover::after, .Minecraft:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* --- СТИЛИ ДЛЯ МОДАЛЬНОГО ОКНА --- */
+        .modal {
+            display: none; /* Скрыто по умолчанию */
+            position: fixed; /* Оставаться на месте, даже при прокрутке */
+            z-index: 1000; /* Находиться поверх всего */
+            left: 0;
+            top: 0;
+            width: 100%; /* Занимать всю ширину */
+            height: 100%; /* Занимать всю высоту */
+            overflow: auto; /* Добавить прокрутку, если содержимое слишком большое */
+            background-color: rgba(0,0,0,0.6); /* Черный фон с прозрачностью */
+            display: flex; /* Используем flexbox для центрирования */
+            align-items: center; /* Центрирование по вертикали */
+            justify-content: center; /* Центрирование по горизонтали */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto; /* Автоматические отступы для центрирования */
+            padding: 30px;
+            border: 1px solid #888;
+            width: 80%; /* Ширина модального окна */
+            max-width: 500px; /* Максимальная ширина */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            border-radius: 10px;
+            text-align: center;
+            position: relative; /* Для позиционирования кнопки закрытия */
+        }
+
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        /* --- КОНЕЦ СТИЛЕЙ ДЛЯ МОДАЛЬНОГО ОКНА --- */
+
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Мукатов Нарин</h1>
+    </header>
+
+    <main>
+        <h1>Кратко о себе</h1>
+        <p>Меня зовут Мукатов Нарин мне 18 лет учесь в коледже МУЦА оценки среднии не пю не курю из увлечения это:</p>
+
+
+        <details class="accordion">
+            <summary for="sport-section">Спорт</summary>
+            <p>В даный момент я занимаюсь Армрестлинг начел тренироватся не давно уже участвовал в саривновании и занил 3 место до арма я занимался дзюдо пачти 6 лет на этом всё ^_^</p>
+            <ul>
+                <li>Саревнавыния по Армрестлингу в asia mall</li>
+                <img src="/Изабражения/Изображение WhatsApp 2025-02-01 в 01.20.52_01cd3fce.jpg" alt="Армрестлинг в Asia Mall">
+                <li>Моя команда по арму </li>
+                <img width="640" height="480" src="/Изабражения/photo_2025-02-01_01-33-26.jpg" alt="Команда по армрестлингу">
+                <li>Ну и как я там боролся</li>
+                <video src="/Видио/IMG_2053.MOV" controls width="320" height="640" muted>
+                </video>
+            </ul>
+            <p>я нерашёл фотогравии где Я ЗАНИМАЮСЬ дзюдо печалька </p>
+            </details>
+
+        <details class="accordion">
+            <summary for="sport-section">Музыка</summary>
+            <p>Если честно я беспонятия какие жанры я слушаю но могу просто показать, какая музыка мне нравится. Недавно я открыл для себя группы такие как КИНО и Кароль и шут.</p>
+            <ul>
+                <li>1. AJR-World s Smallest Violin</li>
+                <img src="/Изабражения/AJR-World s Smallest Violin.jpeg" alt="AJR - World's Smallest Violin">
+                <audio src="/Аудио/AJR-World s Smallest Violin.mp3" controls muted></audio>
+                <li>2. Earth, Wind amp Fire-September</li>
+                <img src="/Изабражения/Earth, Wind amp Fire-September.jpeg" alt="Earth, Wind & Fire - September">
+                <audio src="/Аудио/Earth, Wind amp Fire-September.mp3" controls muted></audio>
+                <li>3. JAWNY-Honeypie</li>
+                <img src="/Изабражения/JAWNY-Honeypie.jpeg" alt="JAWNY - Honeypie">
+                <audio src="/Аудио/JAWNY-Honeypie.mp3" controls muted></audio>
+                <li>4. Lady Gaga feat. Colby ODonis-Just Dance</li>
+                <img src="/Изабражения/Lady Gaga feat. Colby ODonis-Just Dance.jpeg" alt="Lady Gaga - Just Dance">
+                <audio src="/Аудио/Lady Gaga feat. Colby ODonis-Just Dance.mp3" controls muted></audio>
+                <li>5. Pharrell Williams-Happy</li>
+                <img src="/Изабражения/Pharrell Williams-Happy.jpeg" alt="Pharrell Williams - Happy">
+                <audio src="/Аудио/Pharrell Williams-Happy.mp3" controls muted></audio>
+                <li>6. Red Hot Chili Peppers-Cant Stop</li>
+                <img src="/Изабражения/Red Hot Chili Peppers-Cant Stop.jpeg" alt="Red Hot Chili Peppers - Can't Stop">
+                <audio src="/Аудио/Red Hot Chili Peppers-Cant Stop.mp3" controls muted></audio>
+                <li>7. Tally Hall-</li>
+                <img src="/Изабражения/Tally Hall.jpeg" alt="Tally Hall album art">
+                <audio src="/Аудио/Tally Hall-.mp3" controls muted></audio>
+                <li>8. Tally Hall-The Bidding</li>
+                <img src="/Изабражения/Tally Hall.jpeg" alt="Tally Hall album art">
+                <audio src="/Аудио/Tally Hall-The Bidding.mp3" controls muted></audio>
+                <li>9. The Wombats - Greek Tragedy (Oliver Nelson TikTok Remix)</li>
+                <img src="/Изабражения/The Wombats - Greek Tragedy (Oliver Nelson TikTok Remix).jpeg" alt="The Wombats - Greek Tragedy Remix">
+                <audio src="/Аудио/The Wombats - Greek Tragedy (Oliver Nelson TikTok Remix).mp3" controls muted></audio>
+                <li>10. Levitating (feat. DaBaby)</li>
+                <img src="/Изабражения/Levitating (feat. DaBaby).jpeg" alt="Dua Lipa - Levitating">
+                <audio src="/Аудио/tmpbjspvsm_.mp3" controls muted></audio>
+            </ul>
+        </details>
+
+        <details class="accordion">
+            <summary for="sport-section">Игры</summary>
+            <p>Я <span class="qwe" title="тот, кто не увлечён всерьёз видеоиграми, а играет в них время от времени ради удовольствия">казуал</span> не люблю игры где сложность выкручина на максимум. играл в <span class="DOOM" >DOOM 2016</span>, <span class="Genshin_Impact" >Genshin Impact</span>, <span class="Portal_2" >Portal 2</span>, <span class="Minecraft" >Minecraft</span></p>
+        </details>
+
+        <h3>И фотогравии чтобы они просто были (◕‿◕):</h3>
+        <div class="gallery">
+            <img src="/Изабражения/11.jpg" alt="Фото 1">
+            <img src="/Изабражения/16.jpg" alt="Фото 2">
+            <img src="/Изабражения/17.jpg" alt="Фото 3">
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 Mukatov Narin</p>
+    </footer>
+
+    <div id="firstVisitModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Приветствую на моей странице!</h2>
+            <p>
+                Не судите строго, это мой первый сайт, написал толком не зная что такое CSS и HTML. Надеюсь, вам понравится!
+            </p>
+            <p>Приятного просмотра!</p>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('firstVisitModal');
+            const closeButton = document.querySelector('.modal .close-button');
+            const visitedKey = 'authorPageVisited'; // Ключ для localStorage
+
+            // Проверяем, был ли пользователь на этой странице раньше
+            if (!localStorage.getItem(visitedKey)) {
+                modal.style.display = 'flex'; // Показать модальное окно (используем flex для центрирования)
+            }
+
+            // Когда пользователь нажимает на кнопку закрытия (x)
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none'; // Скрыть модальное окно
+                localStorage.setItem(visitedKey, 'true'); // Установить флаг, что модальное окно было показано
+            });
+
+            // Когда пользователь кликает за пределами модального окна, закрыть его
+            window.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                    localStorage.setItem(visitedKey, 'true'); // Установить флаг
+                }
+            });
+        });
+    </script>
+</body>
+</html>

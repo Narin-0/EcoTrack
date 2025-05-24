@@ -1,0 +1,62 @@
+/* CSS/base.css */
+
+/* Глобальные сбросы */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ОБЯЗАТЕЛЬНО: Убедитесь, что html и body занимают всю высоту вьюпорта */
+html, body {
+    height: 100%; /* Занимает 100% высоты окна браузера */
+    min-height: 100vh; /* Гарантирует, что будет не менее 100% высоты вьюпорта */
+    overflow-x: hidden; /* Скрывает горизонтальную прокрутку */
+    margin: 0;
+    padding: 0;
+}
+
+/* Скрытие полосы прокрутки для всего body (Firefox и Webkit) */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f2f4f8;
+    color: #333; /* Цвет текста по умолчанию */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    overflow-y: scroll; /* Разрешить вертикальную прокрутку */
+}
+::-webkit-scrollbar { /* Chrome, Edge, Safari */
+    display: none;
+}
+
+/* Базовые стили для заголовков */
+h1, h2, h3, h4, h5, h6 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+h2 {
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 6px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+/* Базовые стили для параграфов */
+p {
+    margin-bottom: 1em;
+}
+
+/* Базовые стили для ссылок */
+a {
+    text-decoration: none;
+    color: #3b82f6; /* Распространенный синий для ссылок */
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/* Общие стили для списков, если они не являются частью компонентов */
+ul {
+    list-style: none;
+}

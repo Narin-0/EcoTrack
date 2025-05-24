@@ -1,0 +1,177 @@
+/* CSS/components.css */
+
+/* Стили для полей ввода форм */
+input[type="text"],
+input[type="email"],
+input[type="url"],
+input[type="date"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border 0.2s;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="date"]:focus,
+select:focus,
+textarea:focus {
+    border-color: #3b82f6;
+    outline: none;
+}
+
+textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+/* Кнопки */
+button,
+.button { /* Общий стиль кнопки для согласованности */
+    padding: 10px 20px;
+    background-color: #3b82f6; /* Основной синий для действий */
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+    margin-top: 10px;
+}
+
+button:hover,
+.button:hover {
+    background-color: #2563eb;
+}
+
+/* Конкретная кнопка для отправки формы */
+form button[type="submit"] {
+    background-color: #10b981; /* Зеленый для сохранения */
+    font-size: 16px;
+    padding: 12px 20px;
+    margin-top: 25px;
+    border-radius: 10px;
+}
+form button[type="submit"]:hover {
+    background-color: #059669;
+}
+
+/* Сайбдар поверх карты */
+.sidebar {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 300px;
+    max-height: calc(100% - 20px);
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.sidebar .company-search {
+    margin-bottom: 10px;
+}
+
+.sidebar .company-search input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#company-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 250px;
+    overflow-y: auto;
+    border: 1px solid #eee;
+    border-radius: 5px;
+}
+
+#company-list li {
+    display: flex; /* Используем flexbox для размещения названия и кнопки */
+    justify-content: space-between; /* Распределяем элементы по краям */
+    align-items: center; /* Выравниваем по центру вертикально */
+    padding: 8px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+#company-list li:last-child {
+    border-bottom: none;
+}
+
+#company-list li:hover {
+    background-color: #f8f8f8;
+}
+
+#company-list li .company-name-link {
+    flex-grow: 1; /* Название занимает все доступное место */
+    margin-right: 10px; /* Отступ от кнопки */
+    white-space: nowrap; /* Предотвращаем перенос текста */
+    overflow: hidden; /* Скрываем выходящий текст */
+    text-overflow: ellipsis; /* Добавляем многоточие */
+    color: #333; /* Цвет текста для названия компании */
+    font-weight: 500;
+}
+#company-list li .company-name-link:hover {
+    text-decoration: underline;
+}
+
+
+#company-list li .details-button {
+    padding: 5px 10px;
+    font-size: 0.8em;
+    background-color: #007bff; /* Синий для кнопки "Подробнее" */
+    color: white;
+    border-radius: 5px;
+    white-space: nowrap; /* Чтобы кнопка не переносилась */
+}
+
+/* Контейнер поиска на карте (для OpenStreetMap, если он общий) */
+.search-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    display: flex; /* Используем flex для расположения элементов поиска */
+    gap: 5px;
+    align-items: center;
+}
+
+.search-container input {
+    flex-grow: 1; /* Поле ввода занимает доступное пространство */
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 0; /* Отменяем margin-bottom из общих стилей input */
+}
+
+.search-container button {
+    padding: 8px 12px; /* Чуть больше паддинга для кнопки */
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border: none;
+    margin-top: 0; /* Отменяем margin-top из общих стилей button */
+}
+.search-container button:hover {
+    background-color: #0056b3;
+}

@@ -1,0 +1,76 @@
+/* CSS/layout.css */
+
+/* HEADER - Шапка сайта */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: linear-gradient(90deg, #A8E063 0%, #56AB2F 100%);
+    color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: 100%;
+}
+
+header .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+header nav {
+    display: flex; /* Сделайте nav flex-контейнером */
+    gap: 1.5rem;   /* Промежуток между дочерними элементами nav */
+}
+
+header nav a {
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    white-space: nowrap; /* Чтобы ссылки не переносились на новую строку */
+}
+
+/* MAIN - Область основного контента */
+main {
+    padding: 20px; /* Отступы вокруг основного контента */
+    flex-grow: 1; /* Позволяет main занимать доступное пространство */
+    display: flex; /* Делаем main flex-контейнером для page-layout */
+    flex-direction: column; /* Элементы в main будут располагаться по колонке */
+}
+
+/* .page-layout - Общий макет для страниц с боковыми панелями/картой */
+.page-layout {
+    display: flex;
+    gap: 20px; /* Пространство между колонками */
+    flex-grow: 1; /* Позволяет page-layout занимать доступное пространство в main */
+    height: calc(100vh - 100px); /* Пример: 100px - это примерная высота вашего заголовка. Отрегулируйте! */
+    max-height: 800px; /* Максимальная высота для общего макета */
+}
+
+/* Панели внутри page-layout */
+.page-layout .map-panel,
+.page-layout .form-panel,
+.page-layout .sidebar-placeholder { /* sidebar-placeholder если sidebar абсолютно позиционирован */
+    flex: 1; /* По умолчанию распределяем пространство равномерно */
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    overflow-y: auto; /* Для прокручиваемых панелей */
+}
+
+.page-layout .form-panel {
+    flex: 1; /* Форма занимает меньше места */
+}
+
+.page-layout .map-panel {
+    flex: 2; /* Карта занимает больше места */
+    position: relative; /* Для позиционирования элементов внутри */
+    padding: 0; /* Карта полностью заполняет панель */
+    height: 100%; /* Карта должна заполнять всю высоту panel */
+}
+
+#map {
+    height: 100%; /* Карта заполняет свой контейнер map-panel */
+    width: 100%;
+    z-index: 0; /* Карта должна быть на нижнем слое */
+}

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детали компании</title>
+    <link rel="icon" href="/Изабражения/Книга_и_перо.png" type="image/png">
+    <link rel="stylesheet" href="/CSS/base.css">
+    <link rel="stylesheet" href="/CSS/layout.css">
+    <link rel="stylesheet" href="/CSS/components.css">
+    <style>
+        /* Стили, специфичные для страницы деталей компании */
+        .company-detail-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            line-height: 1.6;
+            color: #555;
+        }
+        .company-detail-container h2 {
+            color: #333;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .detail-item {
+            display: flex;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #eee;
+        }
+        .detail-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .detail-label {
+            font-weight: bold;
+            color: #333;
+            width: 180px; /* Фиксированная ширина для меток */
+            flex-shrink: 0; /* Не сжимать */
+        }
+        .detail-value {
+            flex-grow: 1;
+            color: #666;
+        }
+        .button-group {
+            text-align: center;
+            margin-top: 30px;
+            display: flex; /* Для выравнивания элементов */
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap; /* Позволяет элементам переноситься на новую строку на маленьких экранах */
+            gap: 15px; /* Отступ между элементами */
+        }
+        .back-button, .delete-button {
+            display: inline-block;
+            padding: 10px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+        .back-button {
+            background-color: #6c757d;
+            color: white;
+        }
+        .back-button:hover {
+            background-color: #5a6268;
+            text-decoration: none;
+        }
+        .delete-button {
+            background-color: #dc3545; /* Красный для удаления */
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .delete-button:hover {
+            background-color: #c82333;
+        }
+        .admin-password-input {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1em;
+            width: 180px; /* Фиксированная ширина для поля пароля */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">EcoTrack</div>
+        <nav>
+            <a href="/user">Пользователь</a>
+            <a href="/admin">Администратор</a>
+            <a href="/about">О проекте</a>
+            <a href="/author">Автор проекта</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="company-detail-container">
+            <h2 id="company-name-detail">Загрузка информации о компании...</h2>
+            <div id="company-details">
+                <p>Если информация не появляется, убедитесь, что компания существует.</p>
+            </div>
+            <div class="button-group">
+                <a href="/user" class="back-button">Вернуться к списку компаний</a>
+                <input type="password" id="admin-password" class="admin-password-input" placeholder="Пароль администратора">
+                <button id="delete-company-button" class="delete-button">Удалить компанию</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const pathSegments = window.location.pathname.split('/');
+            const companyId = pathSegments[pathSegments.length - 1]; // Получаем ID из URL
+            const companyNameDetail = document.getElementById('company-name-detail');
+            const companyDetailsDiv = document.getElementById('company-details');
+            const deleteButton = document.getElementById('delete-company-button');
+            const adminPasswordInput = document.getElementById('admin-password');
+
+            if (!companyId) {
+                companyNameDetail.textContent = "Ошибка: ID компании не найден в URL.";
+                companyDetailsDiv.innerHTML = "<p>Пожалуйста, вернитесь на страницу со списком компаний.</p>";
+                deleteButton.style.display = 'none'; // Скрываем кнопку удаления
+                adminPasswordInput.style.display = 'none'; // Скрываем поле пароля
+                return;
+            }
+
+            // Функция для загрузки деталей компании
+            async function loadCompanyDetails() {
+                try {
+                    const response = await fetch(`/companies/${companyId}`); // Запрос к API для получения данных
+                    if (!response.ok) {
+                        if (response.status === 404) {
+                            companyNameDetail.textContent = "Компания не найдена.";
+                            companyDetailsDiv.innerHTML = "<p>К сожалению, компания с таким ID не существует.</p>";
+                        } else {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        deleteButton.style.display = 'none'; // Скрываем кнопку удаления
+                        adminPasswordInput.style.display = 'none'; // Скрываем поле пароля
+                        return;
+                    }
+                    const company = await response.json();
+
+                    companyNameDetail.textContent = company.company_name;
+
+                    companyDetailsDiv.innerHTML = `
+                        <div class="detail-item"><div class="detail-label">Название продукта:</div><div class="detail-value">${company.product_name || 'Не указано'}</div></div>
+                        <div class="detail-item"><div class="detail-label">Этап:</div><div class="detail-value">${company.stage || 'Не указано'}</div></div>
+                        <div class="detail-item"><div class="detail-label">Страна:</div><div class="detail-value">${company.country || 'Не указана'}</div></div>
+                        <div class="detail-item"><div class="detail-label">Регион:</div><div class="detail-value">${company.region || 'Не указан'}</div></div>
+                        <div class="detail-item"><div class="detail-label">Сертификации:</div><div class="detail-value">${company.certifications || 'Нет'}</div></div>
+                        <div class="detail-item"><div class="detail-label">Трудовые практики:</div><div class="detail-value">${company.labor_practices || 'Не указаны'}</div></div>
+                        <div class="detail-item"><div class="detail-label">Экологические практики:</div><div class="detail-value">${company.environmental_practices || 'Не указаны'}</div></div>
+                        <div class="detail-item"><div class="detail-label">Дата последнего аудита:</div><div class="detail-value">${company.last_audit_date || 'Не указана'}</div></div>
+                        <div class="detail-item"><div class="detail-label">Контактный email:</div><div class="detail-value">${company.contact_email ? `<a href="mailto:${company.contact_email}">${company.contact_email}</a>` : 'Не указан'}</div></div>
+                        <div class="detail-item"><div class="detail-label">Веб-сайт:</div><div class="detail-value">${company.website ? `<a href="${company.website}" target="_blank">${company.website}</a>` : 'Не указан'}</div></div>
+                        <div class="detail-item"><div class="detail-label">Примечания:</div><div class="detail-value">${company.notes || 'Нет'}</div></div>
+                    `;
+                } catch (error) {
+                    console.error("Ошибка при загрузке деталей компании:", error);
+                    companyNameDetail.textContent = "Ошибка загрузки деталей.";
+                    companyDetailsDiv.innerHTML = "<p>Не удалось загрузить информацию о компании. Пожалуйста, попробуйте еще раз.</p>";
+                    deleteButton.style.display = 'none'; // Скрываем кнопку удаления при ошибке
+                    adminPasswordInput.style.display = 'none'; // Скрываем поле пароля
+                }
+            }
+
+            // Загружаем детали компании при загрузке страницы
+            loadCompanyDetails();
+
+            // Обработчик для кнопки удаления
+            deleteButton.addEventListener('click', async () => {
+                const adminPassword = adminPasswordInput.value;
+
+                if (!adminPassword) {
+                    alert('Пожалуйста, введите пароль администратора для удаления.');
+                    return;
+                }
+
+                if (confirm('Вы уверены, что хотите удалить эту компанию? Это действие необратимо.')) {
+                    try {
+                        const response = await fetch(`/companies/${companyId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ admin_password: adminPassword }) // Отправляем пароль в теле запроса
+                        });
+
+                        if (response.ok) { // Если HTTP статус 2xx (успешно)
+                            alert('Компания успешно удалена!');
+                            window.location.href = '/user'; // Перенаправляем на страницу списка компаний
+                        } else { // Если HTTP статус не 2xx (ошибка)
+                            let errorMessage = `Ошибка ${response.status}: ${response.statusText}`; // Дефолтное сообщение
+                            console.error('Ошибка при удалении. Статус:', response.status, 'Текст статуса:', response.statusText);
+
+                            // Попытка получить JSON-ответ
+                            try {
+                                const errorData = await response.json();
+                                console.error('JSON-ответ ошибки:', errorData); // Выводим в консоль для отладки
+
+                                if (errorData && typeof errorData === 'object') {
+                                    if (errorData.detail) {
+                                        errorMessage = `Ошибка: ${errorData.detail}`;
+                                    } else {
+                                        // Если detail нет, но это объект, пытаемся отобразить его
+                                        errorMessage = `Ошибка: ${JSON.stringify(errorData)}`;
+                                    }
+                                } else if (typeof errorData === 'string') {
+                                    // Если ответ оказался просто строкой
+                                    errorMessage = `Ошибка: ${errorData}`;
+                                }
+                            } catch (jsonError) {
+                                // Если ответ не JSON, или не удалось распарсить
+                                console.warn('Не удалось распарсить JSON ошибки, возможно, ответ не JSON:', jsonError);
+                                // Можно попробовать получить текстовый ответ, если это не JSON
+                                try {
+                                    const textError = await response.text();
+                                    if (textError) {
+                                        errorMessage = `Ошибка: ${textError}`;
+                                    }
+                                } catch (textReadError) {
+                                    console.error('Не удалось прочитать текстовый ответ ошибки:', textReadError);
+                                }
+                            }
+                            alert(errorMessage);
+                        }
+                    } catch (error) {
+                        console.error('Ошибка при удалении компании:', error);
+                        alert(`Произошла ошибка сети при попытке удаления компании: ${error.message || error}`);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
